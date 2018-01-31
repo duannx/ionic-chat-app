@@ -1,0 +1,41 @@
+<ion-header>
+    <div class="header-bar">
+        <div class="left-buttons" (click)="goback()">
+            <button class="button button-back">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="search-bar">
+            <ion-searchbar [(ngModel)]="searchKeyword" [showCancelButton]="false" (ionInput)="onInput($event)" mode="wp">
+            </ion-searchbar>
+        </div>
+    </div>
+</ion-header>
+
+
+<ion-content>
+    <div class="user-list">
+        <div class="user" [class.selected]="user.selected" *ngFor="let user of showUsers">
+            <div class="avatar">
+                <img src="{{user.thumbnail}}" alt="">
+            </div>
+            <div class="user-detail">
+                <div class="name">
+                    {{user.name}}
+                </div>
+                <div class="email">
+                    {{user.email}}
+                </div>
+            </div>
+            <div class="checkbox">
+                <ion-checkbox color="dark" checked="true" [(ngModel)]="user.selected"></ion-checkbox>
+            </div>
+        </div>
+    </div>
+</ion-content>
+<ion-footer>
+    <div class="button-group">
+        <div class="button button-cancel" (click)="goback()">Hủy</div>
+        <div class="button button-ok" (click)="done()">OK</div>
+    </div>
+</ion-footer>

@@ -1,0 +1,109 @@
+page-create-conversation {
+    .content {
+        color: #333;
+    }
+    $headerHeight: 4.5rem;
+    $avatarSize: 3rem;
+    $messageFontSize: 1.6rem;
+    $messageLineHeight: 2.2rem;
+    $mainBackgroundColor: #bb2b33;
+    $mainTextColor: #FFF;
+    font-size: 1.6rem;
+    .button {
+        padding: 0 16px;
+        height: $headerHeight;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        font-size: 1em;
+    }
+    .header-bar {
+        display: flex;
+        height: $headerHeight;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        .search-bar {
+            flex: 1;
+            .searchbar-input-container {
+                border: none !important;
+            }
+            .searchbar-input {
+                border: none !important;
+            }
+            .searchbar-clear-icon {
+                background-color: transparent !important;
+            }
+        }
+    }
+    .user-list {
+        padding-top: 10px;
+        .user {
+            display: flex;
+            height: $headerHeight;
+            padding: 0 5px;
+            margin: 5px 0;
+            &.selected {
+                .user-detail {
+                    .name {
+                        color: $mainBackgroundColor;
+                        font-weight: bold;
+                    }
+                }
+            }
+            .avatar {
+                height: $headerHeight;
+                min-width: $headerHeight;
+                max-width: $headerHeight;
+                display: flex;
+                padding: 5px;
+                img {
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+            .user-detail {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                margin: 0 5px;
+                justify-content: center;
+                .email {
+                    font-size: .9em;
+                    color: gray;
+                }
+            }
+            .checkbox {
+                height: $headerHeight;
+                min-width: $headerHeight;
+                max-width: $headerHeight;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+    .checkbox-checked {
+        border-color: $mainBackgroundColor !important;
+        background-color: $mainBackgroundColor !important;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: $headerHeight;
+        .button {
+            padding: 4px 12px;
+            border-radius: 20px;
+            line-height: 20px;
+            height: auto;
+            margin: 0 5px;
+        }
+        .button-cancel {
+            background-color: $mainTextColor;
+            color: $mainBackgroundColor;
+            border: solid 1px $mainBackgroundColor;
+        }
+        .button-ok {
+            border: solid 1px $mainBackgroundColor;
+        }
+    }
+}

@@ -1,0 +1,73 @@
+<ion-header>
+    <div class="header-bar">
+        <div class="left-buttons">
+            <button class="button button-back" (click)="back()">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="title-bar">
+            <div class="info">
+                <span class="name">Chi tiết</span>
+            </div>
+        </div>
+    </div>
+</ion-header>
+
+
+<ion-content>
+    <div class="zone detail-zone">
+        <div class="zone-title">
+            Thông tin
+        </div>
+        <div class="detail">
+            <div class="avatar" (click)="avatarClick()">
+                <img src="{{otherUser? otherUser.thumbnail : conversation.image}}" alt="">
+            </div>
+            <div class="name" (click)="nameClick()">
+                <span>{{otherUser? otherUser.name : conversation.name}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="zone member-zone">
+        <div class="zone-title">
+            Thành viên
+        </div>
+        <div class="member" *ngFor="let user of conversation.users">
+            <div class="avatar">
+                <img src="{{user.thumbnail}}" alt="">
+            </div>
+            <div class="name-bar">
+                <span class="name">
+                    {{user.name}} <span *ngIf="user.id == currentUser.id">(Bạn)</span>
+                </span>
+                <span class="email">
+                    {{user.email}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="avatarModal" [hidden]="!showAvatarModal">
+        <div class="backdrop" (click)="backdropClick()"></div>
+        <div class="content">
+            <div class="header">
+                Thay đổi ảnh đại diện
+            </div>
+            <div class="body">
+                <div class="avatar">
+                    <img src="{{conversationImage}}" alt="">
+                </div>
+                <div class="file-button">
+                    <label for="inputFileAvatar">
+                        Chọn ảnh 
+                        <ion-icon name="image"></ion-icon>
+                    </label>
+                    <input id="inputFileAvatar" #inputFileAvatar type="file" class="input-file" accept="image/*" single (change)="onFilesChanged($event)">
+                </div>
+            </div>
+            <div class="footer">
+                <button class="modal-button button-cancel" (click)="cancelAvatar()">Hủy</button>
+                <button class="modal-button" (click)="doneAvatar()">OK</button>
+            </div>
+        </div>
+    </div>
+</ion-content>

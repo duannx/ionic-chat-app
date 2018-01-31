@@ -1,0 +1,193 @@
+page-conversation-detail {
+    $color: #333;
+    .content {
+        color: $color;
+    }
+    $headerHeight: 4.5rem;
+    $avatarSize: 3rem;
+    $mainBackgroundColor: #bb2b33;
+    $mainTextColor: #FFF;
+    font-size: 1.6rem;
+    .button {
+        padding: 0 16px;
+        height: $headerHeight;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        font-size: 1em;
+    }
+    .header-bar {
+        display: flex;
+        height: $headerHeight;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        .title-bar {
+            flex: 1;
+        }
+        .title-bar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+            .avatar {
+                height: $avatarSize;
+                max-width: $avatarSize;
+                min-width: $avatarSize;
+                display: flex;
+                margin-right: 10px;
+                img {
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+            .info {
+                padding-left: 2px;
+                display: flex;
+                flex-direction: column;
+                max-width: calc(100% - #{$avatarSize});
+                .name {
+                    max-width: 100%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                .time {
+                    font-size: .7em;
+                }
+            }
+        }
+    }
+    .zone {
+        border-bottom: solid 1px #ddd;
+        padding: 10px 0;
+        .zone-title {
+            padding-left: 10px;
+            font-size: .8em;
+            color: gray;
+            margin-bottom: 5px;
+        }
+        .detail {
+            display: flex;
+            height: $headerHeight;
+            padding: 0 10px;
+            .avatar {
+                height: $headerHeight;
+                max-width: $headerHeight;
+                min-width: $headerHeight;
+                display: flex;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+            .name {
+                padding-left: 10px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+            }
+        }
+        .member {
+            display: flex;
+            height: $headerHeight;
+            padding: 0 10px;
+            margin: 5px 0;
+            .avatar {
+                height: $headerHeight;
+                max-width: $headerHeight;
+                min-width: $headerHeight;
+                display: flex;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+            .name-bar {
+                padding-left: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                .name {
+                    font-weight: 500;
+                }
+                .email {
+                    color: gray;
+                    font-size: .8em;
+                }
+            }
+        }
+    }
+    .avatarModal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 999;
+        .backdrop {
+            z-index: 9999;
+            background-color: rgba(17, 34, 51, 0.4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+        .content {
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            right: 10%;
+            background-color: #FFF;
+            z-index: 99999;
+            font-size: .9em;
+            .header {
+                text-align: center;
+                padding: 10px;
+                width: 100%;
+            }
+            .avatar {
+                width: 4*$headerHeight;
+                height: 4*$headerHeight;
+                margin: 10px auto;
+                display: flex;
+                img {
+                    width: 100%;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    border: solid 1px #ddd;
+                }
+            }
+            .file-button {
+                text-align: center;
+                label {
+                    font-weight: bold;
+                    ion-icon {
+                        vertical-align: middle;
+                        color: $mainBackgroundColor;
+                    }
+                }
+                input {
+                    display: none;
+                }
+            }
+            .footer {
+                padding: 10px;
+                text-align: center;
+                .modal-button {
+                    border: solid 1px $mainBackgroundColor;
+                    color: $mainTextColor;
+                    background-color: $mainBackgroundColor;
+                    border-radius: 20px;
+                    padding: 8px 12px;
+                    &.button-cancel {
+                        background-color: $mainTextColor;
+                        color: $mainBackgroundColor;
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,268 @@
+page-fs-login {
+    .content {
+        color: #333;
+    }
+    $font-size: 1.6rem;
+    $headerHeight: 4.5rem;
+    $mainBackgroundColor: #bb2b33;
+    $mainTextColor: #FFF;
+    $color: #333;
+    .fs-header {
+        height: $headerHeight;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        font-size: $font-size;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .fs-content {
+        background-color: $mainTextColor;
+        position: relative;
+        min-height: 100%;
+    }
+    .logo-image {
+        width: 100%;
+        padding: 3em;
+        text-align: center;
+        margin-bottom: 20px;
+        img {
+            width: 50%;
+        }
+    }
+    .login-form {
+        width: 100%;
+        height: auto;
+    }
+    .login-button {
+        width: 100%;
+        text-align: center;
+        padding: 0px 20px 20px 20px;
+        .fs-button {
+            display: block;
+            width: 100%;
+            font-size: $font-size;
+        }
+    }
+    .divider {
+        width: 100%;
+        text-align: center;
+        padding: 0 15%;
+        position: relative;
+        .line {
+            width: 100%;
+            height: 1px;
+            background-color: lightgray;
+        }
+        .divider-text {
+            color: $color;
+            display: inline-block;
+            padding: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            background-color: #FFF;
+        }
+    }
+    .social-login {
+        margin-top: 20px;
+        padding: 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        $socialButtonHeight: 3.5em;
+        .social-button {
+            border-radius: 50%;
+            width: $socialButtonHeight;
+            height: $socialButtonHeight;
+            text-align: center;
+            background-color: #123;
+            color: #FFF;
+            line-height: $socialButtonHeight;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            &.facebook-button {
+                background-color: #5285c6;
+            }
+            &.google-button {
+                background-color: #ff5a60;
+            }
+            .icon {
+                font-size: 0.5*$socialButtonHeight;
+            }
+        }
+    }
+    .register-button {
+        width: 100%;
+        text-align: center;
+        clear: both;
+        button {
+            background: none;
+            padding: 0;
+            position: relative;
+            font-weight: 500;
+            $borderTrasitionTime: 300ms;
+            &.outline {
+                &::before {
+                    border: solid 1px $mainBackgroundColor;
+                    width: 100%;
+                    height: 100%;
+                    transition: width $borderTrasitionTime ease-in-out, height $borderTrasitionTime $borderTrasitionTime ease-in-out, border-color 0ms 0ms ease-in-out;
+                }
+            }
+            &::before {
+                content: "";
+                width: 0;
+                height: 100%;
+                display: block;
+                position: absolute;
+                top: -1px;
+                left: -1px;
+                border: solid 1px transparent;
+                transition: width $borderTrasitionTime ease-in-out, height $borderTrasitionTime $borderTrasitionTime ease-in-out, border-color $borderTrasitionTime/6*5 $borderTrasitionTime/3 ease-in-out;
+                z-index: 1;
+                border-radius: 20px;
+            }
+            span {
+                padding: 5px 30px;
+                border: solid 1px transparent;
+                display: block;
+                background-color: #FFF;
+                border-radius: 20px;
+                color: $mainBackgroundColor;
+                font-size: $font-size;
+                z-index: 2;
+                position: relative;
+            }
+        }
+    }
+    .text-input {
+        font-size: .9em;
+    }
+    .ng-touched.ng-invalid:not(form) {
+        .text-input {
+            border-color: rgba(187, 43, 51, 0.6);
+        }
+    }
+    .ng-touched.ng-valid:not(form) {
+        .text-input {
+            border-color: gray;
+            color: gray;
+        }
+    }
+    .validate-message {
+        margin-top: 5px;
+        display: block;
+        color: gray;
+    }
+    .copyright {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: gray;
+    }
+    .fs-button {
+        padding: 8px 16px;
+        border-radius: 20px;
+        color: $mainTextColor;
+        background-color: $mainBackgroundColor;
+        border: solid 1px $mainBackgroundColor;
+        transition: 300ms;
+        transform: scale(1);
+        filter: brightness(100%);
+    }
+    .fs-button:active {
+        transform: scale(.96);
+        filter: brightness(110%);
+    }
+    .fs-button-outline {
+        padding: 8px 16px;
+        border-radius: 20px;
+        color: $mainBackgroundColor;
+        background-color: $mainTextColor;
+        border: solid 1px;
+    }
+    .fs-form {
+        padding: 15px 16px;
+        $inputHeight: 2.5em;
+        $divPadding: 6px;
+        background-color: #f9f9f9;
+        margin: 0 0 20px 0;
+        .validate-message {
+            margin-top: 5px;
+            display: block;
+            color: gray;
+            text-align: center;
+        }
+        .input-div {
+            display: flex;
+            position: relative;
+            padding: $divPadding;
+            font-size: 16px;
+        }
+        .text-input {
+            width: 100%;
+            border: solid 1px lightgray;
+            border-radius: 20px;
+            line-height: $inputHeight;
+            text-align: left;
+            color: $color;
+            margin: 0;
+            padding-left: 1.5*$inputHeight;
+            padding-right: 10px;
+            background-color: $mainTextColor;
+        }
+        ion-textarea {
+            .text-input {
+                border-radius: 10px !important;
+                height: 3 * $inputHeight !important;
+            }
+        }
+        .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: $inputHeight;
+            color: $mainBackgroundColor;
+            width: 1.5*$inputHeight;
+            line-height: $inputHeight;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+                width: 0.5 * $inputHeight;
+                height: 0.5 * $inputHeight;
+                margin: auto;
+            }
+        }
+        .button-right {
+            position: absolute;
+            top: $divPadding;
+            right: $divPadding;
+            height: $inputHeight;
+            color: $mainBackgroundColor;
+            width: 1.5*$inputHeight;
+            line-height: $inputHeight;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .ng-invalid:not(form) {
+            border-color: rgba(187, 42, 50, 0.69);
+            .text-input {
+                border-color: rgba(187, 42, 50, 0.69);
+            }
+        }
+    }
+}

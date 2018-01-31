@@ -1,0 +1,43 @@
+<ion-header>
+    <div class="fs-header">Đăng nhập</div>
+</ion-header>
+
+
+<ion-content>
+    <div class="fs-content">
+        <div class="logo-image">
+            <img src="assets/imgs/logo.png" alt="">
+        </div>
+        <div class="login-form">
+            <div class="account-form">
+                <form (ngSubmit)="login()" [formGroup]="loginForm">
+                    <div class="fs-form">
+                        <div class="input-div">
+                            <span class="icon"> 
+                                <ion-icon name="person"></ion-icon>
+                            </span>
+                            <ion-input type="text" [(ngModel)]="account" formControlName="account" placeholder="Tài khoản" (ionChange)="checkForm()"></ion-input>
+                        </div>
+                        <span *ngIf="!loginForm.controls.account.valid && isSubmitted" class="validate-message">{{accountErrorMessage}}</span>
+                        <div class="input-div">
+                            <span class="icon">
+                                <ion-icon name="lock"></ion-icon>
+                            </span>
+                            <ion-input type="password" [(ngModel)]="password" formControlName="password" placeholder="Mật khẩu" (ionChange)="checkForm()">
+                            </ion-input>
+                        </div>
+                        <span *ngIf="!loginForm.controls.password.valid && isSubmitted" class="validate-message">{{passwordErrorMessage}}</span>
+                    </div>
+                    <div class="login-button">
+                        <button ion-button class="fs-button" type="submit">
+                            Đăng nhập
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            Developed by AppInAsia
+        </div>
+    </div>
+</ion-content>

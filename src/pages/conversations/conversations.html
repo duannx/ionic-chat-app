@@ -1,0 +1,29 @@
+<ion-header>
+    <div class="search-bar">
+        <ion-searchbar mode="ios" placeholder="Tìm kiếm cuộc trò chuyện" [(ngModel)]="searchKeyword" (ionInput)="filterConversation($event)"></ion-searchbar>
+    </div>
+</ion-header>
+
+
+<ion-content>
+    <div class="fab-button button-add" ion-fixed (click)="createConversation()">
+        <ion-icon name="add"></ion-icon>
+    </div>
+    <div class="conversation-list">
+        <div class="conversation" [class.active]='conversation.isRead === false' (click)="gotoDetail(conversation)" *ngFor="let conversation of showConversation">
+            <div class="avatar">
+                <img src="{{conversation.image}}" alt="">
+            </div>
+            <div class="detail">
+                <div class="name-bar">
+                    <div class="name"><span>{{conversation.name}}</span></div>
+                    <div class="time">{{getTime(conversation.lastMessageTime)}}</div>
+                </div>
+                <div class="message">
+                    <span> {{conversation.lastMessageContent}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ion-content>

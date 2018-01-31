@@ -1,0 +1,125 @@
+page-conversations {
+    $color: #333;
+    .content {
+        color: $color;
+    }
+    $headerHeight: 4.5rem;
+    $mainBackgroundColor: #bb2b33;
+    $mainTextColor: #FFF;
+    .search-bar {
+        .searchbar {
+            background: none !important;
+            padding: 0 16px;
+            .searchbar-input {
+                border-radius: 20px;
+            }
+        }
+    }
+    $conversationHeight: 6rem;
+    .conversation-list {
+        padding-top: 5px;
+        padding-bottom: $conversationHeight;
+        .conversation {
+            height: $conversationHeight;
+            display: flex;
+            padding: 0 5px;
+            &.active {
+                .detail {
+                    .name-bar {
+                        .name {
+                            font-weight: bold;
+                        }
+                        .time {
+                            color: $color;
+                            font-weight: bold;
+                            max-width: $headerHeight;
+                            min-width: $headerHeight;
+                        }
+                    }
+                    .message {
+                        font-weight: bold;
+                        color: $color;
+                    }
+                }
+            }
+            .avatar {
+                height: $conversationHeight;
+                max-width: $conversationHeight;
+                min-width: $conversationHeight;
+                padding: 5px;
+                display: flex;
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                    border-radius: 50%;
+                }
+            }
+            .detail {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border-bottom: solid 1px lightgray;
+                margin: 0 5px;
+                .name-bar {
+                    display: flex;
+                    .name {
+                        flex-grow: 1;
+                        position: relative;
+                        font-size: 1.1em;
+                        height: 1.3em;
+                        span {
+                            position: absolute;
+                            width: 100%;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            top: 0;
+                            left: 0;
+                            line-height: 1.3em;
+                        }
+                    }
+                    .time {
+                        min-width: $conversationHeight;
+                        max-width: $conversationHeight;
+                        color: #aaa;
+                        font-size: .8em;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                    }
+                }
+                .message {
+                    position: relative;
+                    color: #aaa;
+                    font-size: .9em;
+                    height: 1.3em;
+                    span {
+                        position: absolute;
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        top: 0;
+                        left: 0;
+                        line-height: 1.3em;
+                    }
+                }
+            }
+        }
+    }
+    .fab-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        width: $headerHeight;
+        height: $headerHeight;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: $mainBackgroundColor;
+        color: $mainTextColor;
+        font-size: 1.5em;
+    }
+}

@@ -1,0 +1,62 @@
+<ion-header>
+    <div class="header-bar">
+        <div class="left-buttons">
+            <button class="button button-back" (click)="back()">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="title-bar">
+            <div class="avatar" *ngIf="conversation">
+                <img src="{{conversation.image}}" alt="">
+            </div>
+            <div class="info" *ngIf="lastUser">
+                <span class="name">{{conversation.name}}</span>
+                <span class="time">{{conversation.userIds.length == 2 ? (lastUser.isOnline?"Online":getLastTimeOnline(lastUser.lastOnline)):""}}</span>
+            </div>
+        </div>
+        <div class="right-buttons">
+            <button class="button button-info" (click)="goToConversationDetail()">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content>
+    <div class="chat-room">
+        <div class="chat-list" #chatList>
+            <div class="conversation-header">
+                <ion-spinner name="crescent" class="spiner" *ngIf="showSpiner && !isLoadAllMessage"></ion-spinner>
+                <div class="start-of-conversation" *ngIf="isLoadAllMessage">
+                    Cuộc trò chuyện bắt đầu <br>{{conversation?.time | date: 'dd/MM/yyyy hh:mm:ss'}}
+                </div>
+            </div>
+            <div class="chat-item" id="message-{{message.id}}" [class.system]="message.type == messageType.SYSTEM.id" [ngClass]="message.classList" *ngFor="let message of conversation?.messages">
+                <div class="avatar">
+                    <img src="{{message.user.thumbnail}}" alt="" *ngIf="message.showAvatar">
+                </div>
+                <div class="message" *ngIf="message.type == messageType.TEXT.id" [innerText]="message.content">
+                </div>
+                <div class="message system" *ngIf="message.type == messageType.SYSTEM.id" [innerText]="message.content">
+                </div>
+                <div class="message image-message" *ngIf="message.type == messageType.IMAGE.id">
+                    <img src="{{message.content}}" class="message image-message" alt="image">
+                </div>
+                <div class="state state-{{message.state}}" *ngIf="message.showState">
+                    <i class="fa fa-check" aria-hidden="true" *ngIf="message.state == messageState.SENDED.id"></i>
+                    <img src="{{lastUser?.thumbnail}}" alt="" *ngIf="message.state == messageState.SEEN.id">
+                </div>
+            </div>
+        </div>
+        <div class="text-box">
+            <label for="inputfile" class="button button-image">
+                <ion-icon name="image"></ion-icon>
+            </label>
+            <input id="inputfile" #inputFile type="file" class="input-file" accept="image/*" single (change)="onFilesChanged($event)">
+            <textarea type="text" rows="1" class="text-input" #textInput></textarea>
+            <button class="button button-send" (click)="send()">
+                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</ion-content>
