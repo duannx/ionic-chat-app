@@ -189,8 +189,16 @@ export class ChatControllerProvider {
     return this.firebaseService.updateConversation(conversationId, value);
   }
 
+  updateMessage(conversationId: string, messageId: string, value) {
+    return this.firebaseService.updateMessage(conversationId, messageId, value);
+  }
+
   uploadFileToStorage(file: File) {
     return this.firebaseService.uploadFileToStorage(file);
+  }
+
+  deleteUserConversation(userId: string, conversationId: string){
+    return this.firebaseService.deleteUserConversation(userId, conversationId);
   }
 
   bodauTiengViet(str: string): string {

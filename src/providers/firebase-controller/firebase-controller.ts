@@ -425,8 +425,12 @@ export class FirebaseControllerProvider {
     return this.updateDocument(FIREBASE_PATH.USER + this.separator + ownerId + this.separator + FIREBASE_PATH.CONVERSATION + this.separator + conversationId, value);
   }
 
-  updateConversation(  conversationId: string, value: string): Promise<any> {
+  updateConversation(conversationId: string, value: string): Promise<any> {
     return this.updateDocument(FIREBASE_PATH.CONVERSATION + this.separator + conversationId, value);
+  }
+
+  updateMessage(conversationId: string, messageId: string, value): Promise<any> {
+    return this.updateDocument(FIREBASE_PATH.CONVERSATION + this.separator + conversationId + this.separator + FIREBASE_PATH.MESSAGE + this.separator + messageId, value);
   }
 
   getCurrentUser() {
@@ -439,6 +443,10 @@ export class FirebaseControllerProvider {
 
   uploadFileToStorage(file: File) {
     return this.storage.ref().child('chat-images/' + file.name + Date.now()).put(file);
+  }
+
+  deleteUserConversation(userId: string, conversationId: string){
+    return this.deleteDocument(FIREBASE_PATH.USER +  this.separator +  userId + this.separator + FIREBASE_PATH.CONVERSATION + this.separator + conversationId);
   }
 
 }

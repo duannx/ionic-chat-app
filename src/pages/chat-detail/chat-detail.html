@@ -9,9 +9,9 @@
             <div class="avatar" *ngIf="conversation">
                 <img src="{{conversation.image}}" alt="">
             </div>
-            <div class="info" *ngIf="lastUser">
+            <div class="info">
                 <span class="name">{{conversation.name}}</span>
-                <span class="time">{{conversation.userIds.length == 2 ? (lastUser.isOnline?"Online":getLastTimeOnline(lastUser.lastOnline)):""}}</span>
+                <span class="time" *ngIf="lastUser">{{conversation.userIds.length == 2 ? (lastUser.isOnline?"Online":getLastTimeOnline(lastUser.lastOnline)):""}}</span>
             </div>
         </div>
         <div class="right-buttons">
@@ -31,20 +31,24 @@
                     Cuộc trò chuyện bắt đầu <br>{{conversation?.time | date: 'dd/MM/yyyy hh:mm:ss'}}
                 </div>
             </div>
-            <div class="chat-item" id="message-{{message.id}}" [class.system]="message.type == messageType.SYSTEM.id" [ngClass]="message.classList" *ngFor="let message of conversation?.messages">
-                <div class="avatar">
-                    <img src="{{message.user.thumbnail}}" alt="" *ngIf="message.showAvatar">
-                </div>
-                <div class="message" *ngIf="message.type == messageType.TEXT.id" [innerText]="message.content">
-                </div>
-                <div class="message system" *ngIf="message.type == messageType.SYSTEM.id" [innerText]="message.content">
-                </div>
-                <div class="message image-message" *ngIf="message.type == messageType.IMAGE.id">
-                    <img src="{{message.content}}" class="message image-message" alt="image">
-                </div>
-                <div class="state state-{{message.state}}" *ngIf="message.showState">
-                    <i class="fa fa-check" aria-hidden="true" *ngIf="message.state == messageState.SENDED.id"></i>
-                    <img src="{{lastUser?.thumbnail}}" alt="" *ngIf="message.state == messageState.SEEN.id">
+            <div class="item" *ngFor="let message of conversation?.messages">
+                <div class="time" *ngIf="message.classList.indexOf('first-of-block') > -1">{{message.time | date: 'dd Tg M - hh:mm'}}</div>
+                <div class="chat-item" id="message-{{message.id}}" [class.system]="message.type == messageType.SYSTEM.id" [ngClass]="message.classList">
+                    <div class="avatar">
+                        <img src="{{message.user.thumbnail}}" alt="" *ngIf="message.showAvatar">
+                    </div>
+                    <div class="message" [innerText]="message.content" *ngIf="message.type == messageType.TEXT.id || (message.type == messageType.IMAGE.id && !message.content.includes('/'))">
+                    </div>
+                    <div class="message system" *ngIf="message.type == messageType.SYSTEM.id" [innerText]="message.content">
+                    </div>
+                    <div class="message image-message" *ngIf="message.type == messageType.IMAGE.id && message.content.includes('/')">
+                        <img src="{{message.content}}" class="message image-message" alt="image">
+                    </div>
+                    <div class="state state-{{message.state}}" [class.state-2]="(!lastUser && message.state == messageState.SEEN.id) || message.state == messageState.SENDED.id" *ngIf="message.showState">
+                        <i class="fa fa-check" aria-hidden="true" *ngIf="message.state == messageState.SENDED.id"></i>
+                        <i class="fa fa-check" aria-hidden="true" *ngIf="!lastUser && message.state == messageState.SEEN.id"></i>
+                        <img src="{{lastUser?.thumbnail}}" alt="" *ngIf="lastUser && message.state == messageState.SEEN.id">
+                    </div>
                 </div>
             </div>
         </div>

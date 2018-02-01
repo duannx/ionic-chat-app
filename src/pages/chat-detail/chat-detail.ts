@@ -30,8 +30,10 @@ export class ChatDetailPage {
   showSpiner = false;
   isLoadAllMessage = false;
   firstFetchedData = true;
+  isEnterInView = false;
 
   messageSubscription: Subscription;
+  fuckingCharactor = "/";
 
   @ViewChild("textInput") textInputRef: ElementRef;
   @ViewChild("chatList") chatListRef: ElementRef;
@@ -79,6 +81,8 @@ export class ChatDetailPage {
               message.showAvatar = false;
               this.chatController.getUserById(message.userId).then(user => {
                 message.user = user;
+              }, error=>{
+                console.log(error);
               })
               this.addMessageToArray(message);
             });
@@ -118,7 +122,6 @@ export class ChatDetailPage {
     if (this.inputFileRef) {
       this.inputFile = this.inputFileRef.nativeElement;
     }
-
     this.platform.ready().then(() => {
       this.keyboard.onKeyboardShow().subscribe(event => {
         this.scrollToBottomChat();
@@ -132,15 +135,15 @@ export class ChatDetailPage {
         }, 100)
       })
     })
-  }
 
-  ionViewDidEnter() {
     let loading = this.loadingCtrl.create({
       content: "Đang tải..."
     });
     loading.present();
     //Get opposite user
-    this.getLastUser();
+    if (this.conversation.userIds.length == 2) {
+      this.getLastUser();
+    }
     //If conversation already have message
     if (this.conversation.messages.length >= 10000) {
       //Check if message is lastest
@@ -150,10 +153,6 @@ export class ChatDetailPage {
       this.conversation.messages = [];
       this.messageSubscription = this.chatController.fetchMessageInConversation(this.conversation.id, "desc", null, null, this.messagePerPage).subscribe(data => {
         console.log("message fetched");
-        //Update isRead to conversation
-        this.chatController.updateUserConversation(this.chatController.user.id, this.conversation.id, {
-          isRead: true
-        })
         loading.dismiss();
         data.docChanges.forEach(change => {
           let messageData = change.doc.data();
@@ -164,8 +163,17 @@ export class ChatDetailPage {
               message.id = change.doc.id;
               message.showState = false;
               message.showAvatar = false;
+              if (this.isEnterInView && message.state != MESSAGE_STATE.SEEN.id && message.userId != this.chatController.user.id) {
+                //update message state to seen  
+                this.chatController.updateMessage(this.conversation.id, message.id, {
+                  state: MESSAGE_STATE.SEEN.id
+                })
+                message.state = MESSAGE_STATE.SEEN.id;
+              }
               this.chatController.getUserById(message.userId).then(user => {
                 message.user = user;
+              }, error=>{
+                console.log(error);
               })
               // console.log("fectched data", messageData, change.type, message.showState, message);
               this.addMessageToArray(message);
@@ -198,8 +206,33 @@ export class ChatDetailPage {
     }
   }
 
+  ionViewDidEnter() {
+    //Update isRead to conversation
+    this.chatController.updateUserConversation(this.chatController.user.id, this.conversation.id, {
+      isRead: true
+    })
+    //Update state seen for message
+    if (this.conversation && this.conversation.messages) {
+      this.conversation.messages.forEach(message => {
+        if (message.state != MESSAGE_STATE.SEEN.id && message.userId != this.chatController.user.id) {
+          //update message state to seen
+          this.chatController.updateMessage(this.conversation.id, message.id, {
+            state: MESSAGE_STATE.SEEN.id
+          })
+          message.state = MESSAGE_STATE.SEEN.id;
+        }
+      })
+    }
+    this.isEnterInView = true;
+  }
+
   ionViewDidLeave() {
-    if (this.messageSubscription) this.messageSubscription.unsubscribe();
+    //Update isRead to conversation
+    this.chatController.updateUserConversation(this.chatController.user.id, this.conversation.id, {
+      isRead: true
+    })
+    this.isEnterInView = false;
+    // if (this.messageSubscription) this.messageSubscription.unsubscribe();
   }
 
   scrollToBottomChat(duration?: number) {
@@ -217,6 +250,8 @@ export class ChatDetailPage {
       if (id != this.chatController.user.id) {
         this.chatController.getUserById(id).then(user => {
           this.lastUser = user;
+        }, error=>{
+          console.log(error);
         });
         break;
       }
@@ -224,15 +259,15 @@ export class ChatDetailPage {
 
   }
 
-  send(content?: string, type?: number) {
-    console.log("send", content, type);
-    if (!content) {
+  send(message?: Message) {
+    console.log("send message", message);
+    if (!message) {
+      message = new Message();
       this.textInput.focus();
+      message.content = this.textInput.value.trim();
+      message.type = MESSAGE_TYPE.TEXT.id;
     }
-
-    if (content || this.textInput.value.trim()) {
-      let message = new Message();
-      message.content = content ? content : this.textInput.value;
+    if (message.content.trim()) {
       message.userId = this.chatController.user.id;
       message.state = MESSAGE_STATE.CREATED.id;
       message.time = new Date();
@@ -240,7 +275,6 @@ export class ChatDetailPage {
       message.classList.push("last-of-block");
       message.showState = true;
       message.showAvatar = false;
-      message.type = type ? type : MESSAGE_TYPE.TEXT.id;
 
       //Change class of lastmessage
       let lastMessage = this.conversation.messages[this.conversation.messages.length - 1];
@@ -261,12 +295,21 @@ export class ChatDetailPage {
       this.chatController.addMessage(this.conversation.id, message).then(data => {
         message.state = MESSAGE_STATE.SENDED.id;
         message.id = data;
+        if (message["uploaded"]) {
+          //update message content
+          this.chatController.updateMessage(this.conversation.id, message.id, {
+            content: message.content
+          })
+        }
+      }, error=>{
+        console.log(error);
       })
       //Add notification for user in conversation
       this.conversation.userIds.forEach(userId => {
         this.chatController.updateUserConversation(userId, this.conversation.id, {
           isRead: userId == this.chatController.user.id,
-          lastMessageContent: message.content,
+          lastMessageContent: message.type == MESSAGE_TYPE.IMAGE.id ?
+            (this.chatController.user.name + " đã gửi 1 ảnh") : message.content,
           lastUserId: message.userId,
           lastMessageTime: this.chatController.firebaseService.timestampPlaceholder
         })
@@ -400,9 +443,22 @@ export class ChatDetailPage {
   onFilesChanged(evnet) {
     if (this.inputFile && this.inputFile.files.length > 0) {
       let file = this.inputFile.files[0];
+      let message = new Message();
+      message.content = this.chatController.user.name + " đang gửi ảnh...";
+      message.type = MESSAGE_TYPE.IMAGE.id
+      this.send(message);
       this.chatController.uploadFileToStorage(file).then((snapshot) => {
         console.log('Uploaded a blob or file!', snapshot.downloadURL);
-        this.send(snapshot.downloadURL, MESSAGE_TYPE.IMAGE.id);
+        message.content = snapshot.downloadURL;
+        message["uploaded"] = true;
+        if (message.id) {
+          //update message content
+          this.chatController.updateMessage(this.conversation.id, message.id, {
+            content: message.content
+          })
+        }
+      }, error=>{
+        console.log(error);
       });
     }
   }

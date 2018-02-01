@@ -97,6 +97,12 @@ page-chat-detail {
                 }
             }
         }
+        .time {
+            width: 100%;
+            color: gray;
+            font-size: 12px;
+            text-align: center;
+        }
         .chat-item {
             width: 100%;
             display: flex;
@@ -243,8 +249,9 @@ page-chat-detail {
                 justify-content: center;
                 align-items: center;
                 &.state-2 {
-                    background-color: $mainBackgroundColor;
-                    color: $mainTextColor;
+                    background-color: $mainBackgroundColor !important;
+                    color: $mainTextColor !important;
+                    align-items: center !important;
                 }
                 &.state-3 {
                     border: none;

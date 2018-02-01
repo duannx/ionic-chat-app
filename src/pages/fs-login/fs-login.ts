@@ -43,6 +43,8 @@ export class FsLoginPage {
       this.navCtrl.setRoot("ConversationsPage");
       this.chatController.getUserById(this.chatController.getFirebaseCurrentUser().uid).then(user => {
         this.chatController.user = user;
+      }, error=>{
+        console.log(error);
       })
     }
   }
@@ -60,7 +62,11 @@ export class FsLoginPage {
           this.chatController.user = user;
           loading.dismiss();
           this.navCtrl.setRoot("ConversationsPage");
+        }, error=>{
+          console.log(error);
         })
+      }, error=>{
+        console.log(error);
       })
     } else {
       this.checkForm();

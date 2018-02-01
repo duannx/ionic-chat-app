@@ -51,6 +51,8 @@ export class ConversationsPage {
                 this.chatController.getUserById(useriId).then(user => {
                   conversation.name = user.name;
                   conversation.image = user.thumbnail;
+                }, error=>{
+                  console.log(error);
                 })
               }
             });

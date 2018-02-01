@@ -117,6 +117,21 @@ page-conversation-detail {
                 }
             }
         }
+        .zon-footer {
+            padding: 10px;
+            text-align: center;
+        }
+        .button-exit {
+            padding: 8px 12px;
+            border-radius: 20px;
+            color: #bb2b33;
+            background-color: #FFF;
+            margin: 0 auto;
+            display: block;
+            ion-icon {
+                vertical-align: middle;
+            }
+        }
     }
     .avatarModal {
         position: absolute;

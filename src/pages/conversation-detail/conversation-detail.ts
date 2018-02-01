@@ -46,6 +46,8 @@ export class ConversationDetailPage {
         }
         console.log("other user", this.otherUser);
       })
+    }, error => {
+      console.log(error);
     })
   }
 
@@ -97,6 +99,8 @@ export class ConversationDetailPage {
               this.chatController.addMessage(this.conversation.id, message).then(data => {
                 message.state = MESSAGE_STATE.SENDED.id;
                 message.id = data;
+              }, error => {
+                console.log(error);
               })
 
               //Add notification for user in conversation
@@ -157,6 +161,8 @@ export class ConversationDetailPage {
         this.chatController.addMessage(this.conversation.id, message).then(data => {
           message.state = MESSAGE_STATE.SENDED.id;
           message.id = data;
+        }, error => {
+          console.log(error);
         })
 
         //Add notification for user in conversation
@@ -169,13 +175,62 @@ export class ConversationDetailPage {
             image: this.conversation.image
           })
         });
+      }, error => {
+        console.log(error);
       })
-    }else{
+    } else {
       this.cancelAvatar();
     }
   }
 
   backdropClick() {
     this.showAvatarModal = false;
+  }
+
+  exit() {
+    let alert = this.alertCtrl.create({
+      message: "Bạn có chắc chắn muốn rời cuộc trò chuyện?",
+      buttons: [{
+        text: "Hủy",
+        role: "cancel"
+      }, {
+        text: "OK",
+        handler: () => {
+          //Remove conversation from user conversations list
+          this.chatController.deleteUserConversation(this.chatController.user.id, this.conversation.id);
+          //Remove userId from main conversation
+          let index = this.conversation.userIds.indexOf(this.chatController.user.id);
+          if (index > -1) { this.conversation.userIds.splice(index, 1) };
+          this.chatController.updateConversation(this.conversation.id, { userIds: this.conversation.userIds });
+          //Add a system message to conversation 
+          let message = new Message();
+          message.content = this.chatController.user.name + " đã rời khỏi cuộc trò chuyện.";
+          message.userId = this.chatController.user.id;
+          message.state = MESSAGE_STATE.CREATED.id;
+          message.time = new Date();
+          message.type = MESSAGE_TYPE.SYSTEM.id;
+
+          this.chatController.addMessage(this.conversation.id, message).then(data => {
+            message.state = MESSAGE_STATE.SENDED.id;
+            message.id = data;
+          }, error => {
+            console.log(error);
+          })
+
+          //Add notification for user in conversation
+          this.conversation.userIds.forEach(userId => {
+            this.chatController.updateUserConversation(userId, this.conversation.id, {
+              isRead: userId == this.chatController.user.id,
+              lastMessageContent: message.content,
+              lastUserId: message.userId,
+              lastMessageTime: this.chatController.firebaseService.timestampPlaceholder,
+              userIds: this.conversation.userIds
+            })
+          });
+          this.navCtrl.setRoot("ConversationsPage");
+        }
+      }]
+    })
+    alert.present();
   }
 }

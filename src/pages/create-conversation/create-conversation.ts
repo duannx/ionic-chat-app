@@ -119,6 +119,8 @@ export class CreateConversationPage {
           });
           this.viewCtrl.dismiss({ conversation: conversation });
           console.log("conversationId", id, conversation, conversation.userIds, conversation.userIds.length);
+        }, error=>{
+          console.log(error);
         })
       }
 
